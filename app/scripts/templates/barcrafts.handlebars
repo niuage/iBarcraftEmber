@@ -1,0 +1,12 @@
+<h2>barcrafts</h2>
+
+{{template "search-form"}}
+
+{{#each b in controller}}
+  {{#with b}}
+    <li style="color: #000">
+      <h3><a {{action barcraft_path this href=true}}>{{barcraft.title}}</a><h3>
+      <p>{{barcraft.description}}</p>
+    </li>
+  {{/with}}
+{{/each}}
