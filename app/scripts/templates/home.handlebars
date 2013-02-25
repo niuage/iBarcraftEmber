@@ -1,11 +1,5 @@
-{{template "search-form"}}
-
-{{#if barcrafts.isLoaded}}
 <ul>
   {{#each barcraft in barcrafts}}
     <li>{{#linkTo "barcraft" barcraft}}{{barcraft.title}}{{/linkTo}}</li>
   {{/each}}
 </ul>
-{{else}}
-  LOADING...
-{{/if}}

@@ -1,51 +1,49 @@
-window.App.Router = Ember.Router.extend({
-  enableLogging: true,
-  root: Ember.Route.extend({
-
-    home_path: Ember.Route.transitionTo('root.index'),
-    index: Ember.Route.extend({
-      route: '/',
-      connectOutlets: function(router, context) {
-        applicationController = router.get('applicationController');
-        applicationController.connectOutlet("topnav", "topnav");
-        applicationController.connectOutlet("body", "barcrafts", App.Barcraft.find());
-      }
-    }),
-
-    barcrafts_path: Ember.Route.transitionTo('barcrafts.index'),
-    barcraft_path: Em.Route.transitionTo('root.barcrafts.show'),
-    barcrafts: Ember.Route.extend({
-      route: "/barcrafts",
-
-      index: Ember.Route.extend({
-        route: "/",
-        connectOutlets: function(router, barcraft) {
-          applicationController = router.get('applicationController');
-          applicationController.connectOutlet("topnav", "topnav");
-          applicationController.connectOutlet('body', 'barcrafts', App.Barcraft.find());
-        }
-      }),
-
-      show: Ember.Route.extend({
-        route: "/:id",
-        enter: function ( router ){
-          console.log("The shoe detail sub-state was entered.");
-        },
-        serialize:  function(router, barcraft) {
-          return { id: barcraft.id || barcraft.barcraft.id }
-        },
-        deserialize:  function(router, barcraft) {
-          console.log('deserialize')
-          return App.Barcraft.find(barcraft.id);
-        },
-        connectOutlets: function(router, barcraft) {
-          console.log(barcraft);
-          applicationController = router.get('applicationController');
-          applicationController.connectOutlet("topnav", "topnav");
-          applicationController.connectOutlet('body', 'barcraft', barcraft.barcraft || barcraft);
-        }
-      })
-    })
-})
+App.Router.map(function(match) {
+  match("/").to("home");
+  match("/barcrafts").to("barcrafts");
+  match("/barcrafts/:barcraft_id").to("barcraft")
 });
 
+App.HomeRoute = Ember.Route.extend({
+  renderTemplate: function() {
+    console.log("ok...")
+    this.render('barcrafts', {
+      outlet: "sidebar"
+    })
+    this.render('barcraft')
+  },
+
+  setupController: function(controller, model) {
+
+    var barcrafts = App.Barcraft.find();
+    controller.set('barcrafts', barcrafts);
+    controller.set('barcraft', App.Barcraft.find());
+  }
+});
+
+// App.BarcraftRoute = Ember.Route.extend({
+//   renderTemplate: function() {
+//     console.log("yo")
+
+//     this.render('barcrafts', {
+//       outlet: "sidebar"
+//     })
+
+//     this.render('barcraft')
+
+//     this._super();
+//   },
+//   setupController: function(controller, model) {
+//     this._super();
+//     console.log("setup")
+//     controller.set('content', model);
+//     // if (!controller.get('barcrafts') || controller.get('barcrafts').length == 0) {
+//       var barcrafts = App.Barcraft.find();
+//       controller.set('barcrafts', barcrafts);
+//     // }
+//   }
+// })
+
+App.SearchController = Ember.ArrayController.extend({
+  query: ""
+})

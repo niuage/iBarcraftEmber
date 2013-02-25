@@ -1,1 +1,11 @@
 /* Will be compiled down to a single stylesheet with your sass files */
+
+#sidebar {
+  float: left;
+  width: 300px;
+}
+
+#content {
+  float: left;
+  width: 700px;
+}

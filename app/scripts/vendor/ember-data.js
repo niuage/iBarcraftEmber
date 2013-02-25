@@ -6298,6 +6298,7 @@ var generatedId = 0;
 
 DS.JSONSerializer = DS.Serializer.extend({
   init: function() {
+    console.log("Init")
     this._super();
 
     if (!get(this, 'transforms')) {
@@ -6313,6 +6314,7 @@ DS.JSONSerializer = DS.Serializer.extend({
   },
 
   configure: function(type, configuration) {
+    console.log("configure")
     if (type && !configuration) {
       return this._super(type);
     }
@@ -6325,9 +6327,11 @@ DS.JSONSerializer = DS.Serializer.extend({
     }
 
     this._super.apply(this, arguments);
+    console.log("configure end")
   },
 
   addId: function(data, key, id) {
+    console.log("addId")
     data[key] = id;
   },
 
@@ -6340,6 +6344,7 @@ DS.JSONSerializer = DS.Serializer.extend({
     @param {any} value the value to add to the serialized data
   */
   addAttribute: function(hash, key, value) {
+    console.log("addAttribute")
     hash[key] = value;
   },
 
@@ -6352,15 +6357,18 @@ DS.JSONSerializer = DS.Serializer.extend({
     @return {Object}
   */
   createSerializedForm: function() {
+    console.log("createSerializedForm")
     return {};
   },
 
   extractAttribute: function(type, hash, attributeName) {
+    console.log("extractAttribute" + type + " " + attributeName)
     var key = this._keyForAttributeName(type, attributeName);
     return hash[key];
   },
 
   extractId: function(type, hash) {
+    console.log("extractId")
     var primaryKey = this._primaryKey(type);
 
     if (hash.hasOwnProperty(primaryKey)) {
@@ -6375,14 +6383,17 @@ DS.JSONSerializer = DS.Serializer.extend({
   },
 
   extractHasMany: function(type, hash, key) {
+    console.log("extractHasMany")
     return hash[key];
   },
 
   extractBelongsTo: function(type, hash, key) {
+    console.log("extractBelongsTo")
     return hash[key];
   },
 
   addBelongsTo: function(hash, record, key, relationship) {
+    console.log("addBelongsTo")
     var type = record.constructor,
         name = relationship.key,
         value = null,
@@ -6416,6 +6427,7 @@ DS.JSONSerializer = DS.Serializer.extend({
     @param {Object} relationship metadata about the relationship being serialized
   */
   addHasMany: function(hash, record, key, relationship) {
+    console.log("addHasMany")
     var type = record.constructor,
         name = relationship.key,
         serializedHasMany = [],
@@ -6441,6 +6453,7 @@ DS.JSONSerializer = DS.Serializer.extend({
   // EXTRACTION
 
   extract: function(loader, json, type, record) {
+    console.log("extract")
     var root = this.rootForType(type);
 
     this.sideload(loader, type, json, root);
@@ -6453,6 +6466,7 @@ DS.JSONSerializer = DS.Serializer.extend({
   },
 
   extractMany: function(loader, json, type, records) {
+    console.log("extractMany")
     var root = this.rootForType(type);
     root = this.pluralize(root);
 
@@ -6474,6 +6488,7 @@ DS.JSONSerializer = DS.Serializer.extend({
   },
 
   extractMeta: function(loader, type, json) {
+    console.log("extractMeta")
     var meta = json[this.configOption(type, 'meta')], since;
     if (!meta) { return; }
 
@@ -6525,6 +6540,7 @@ DS.JSONSerializer = DS.Serializer.extend({
   },
 
   loadValue: function(loader, type, value) {
+    console.log("loadValue")
     if (value instanceof Array) {
       for (var i=0; i < value.length; i++) {
         loader.sideload(type, value[i]);
@@ -6539,11 +6555,13 @@ DS.JSONSerializer = DS.Serializer.extend({
   // define a plurals hash in your subclass to define
   // special-case pluralization
   pluralize: function(name) {
+    console.log("pluralize")
     var plurals = this.configurations.get('plurals');
     return (plurals && plurals[name]) || name + "s";
   },
 
   rootForType: function(type) {
+    console.log("rootForType")
     var typeString = type.toString();
 
     Ember.assert("Your model must not be anonymous. It was " + type, typeString.charAt(0) !== '(');

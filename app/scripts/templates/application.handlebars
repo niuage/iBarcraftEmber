@@ -1,3 +1,15 @@
-{{outlet topnav}}
+<header>
+  {{#linkTo "home"}}Home{{/linkTo}}
+  {{#linkTo "barcrafts"}}Barcrafts{{/linkTo}}
+</header>
 
-{{outlet body}}
+<div id="sidebar">
+  {{outlet sidebar}}
+</div>
+<div id="content">
+  {{outlet}}
+</div>
+
+<footer>
+  <p>© Joe's Lamprey Shack - All Rights Reserved</p>
+</footer>
